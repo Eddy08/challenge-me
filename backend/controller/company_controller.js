@@ -41,9 +41,10 @@ const details = async (req, res) => {
 
           for (const match of divTagList[i].trim().matchAll(regex)) {
             console.log(`Hello ${match[1]} ${match[2]}`);
-            let map = {}
-            map[`${match[2]}`]=`${match[1]}`
-            
+            let map = {};
+            map["company_name"] = `${match[2]}`;
+            map["company_id"] = `${match[1]}`;
+
             data.push(map);
           }
         }
