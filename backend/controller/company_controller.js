@@ -1,4 +1,4 @@
-const request = require("request");
+const axios = require("axios");
 
 const details = async (req, res) => {
   //   console.log(JSON.stringify(req));
@@ -6,8 +6,8 @@ const details = async (req, res) => {
   let body = new URLSearchParams(req.body).toString();
   console.log(body);
   try {
-    let options = {
-      method: "POST",
+    let config = {
+      method: "post",
       url: "https://www.zaubacorp.com/custom-search",
       headers: {
         Accept: "*/*",
@@ -19,13 +19,40 @@ const details = async (req, res) => {
         DNT: "1",
         Connection: "keep-alive",
         Referer: "https://www.zaubacorp.com/",
+        Cookie: "drupal.samesite=1",
       },
-      body: req.body,
+      data: body,
     };
-    request(options, function (error, response) {
-      if (error) throw new Error(error);
-      console.log(response.body);
-    });
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        let result = response.data.replaceAll("\t", "").replaceAll("\n", "");
+        let data = [];
+        divTagList = result.split("</div>");
+        const regex = /<div class="show" align="left" id="(.*)">(.*)/gm;
+
+        for (let i = 0; i < divTagList.length; i++) {
+          // let el = divTagList[i].replaceAll("/div.*id/", "");
+          // data.push(el);
+          console.log("list");
+          console.log(divTagList[i].trim());
+          console.log("list");
+
+          for (const match of divTagList[i].trim().matchAll(regex)) {
+            console.log(`Hello ${match[1]} ${match[2]}`);
+            let map = {}
+            map[`${match[2]}`]=`${match[1]}`
+            
+            data.push(map);
+          }
+        }
+        console.log("\n Real Result \n ==> ", data);
+        res.send(JSON.stringify(data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   } catch (err) {
     console.log(err);
   }
