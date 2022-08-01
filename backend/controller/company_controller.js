@@ -6,7 +6,6 @@ const details = async (req, res) => {
   let body = new URLSearchParams(req.body).toString();
   console.log(body);
   try {
-    // result = await axios.post("https://www.zaubacorp.com/custom-search", body);
     let options = {
       method: "POST",
       url: "https://www.zaubacorp.com/custom-search",
@@ -26,7 +25,6 @@ const details = async (req, res) => {
     request(options, function (error, response) {
       if (error) throw new Error(error);
       console.log(response.body);
-      res.send(result);
     });
   } catch (err) {
     console.log(err);
