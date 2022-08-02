@@ -1,0 +1,10 @@
+option{
+    width: 100%;
+    height: 100%;
+    font-size: 2em;
+    color:blue;
+}
+input{
+    width:50%;
+    height:2rem;
+}
