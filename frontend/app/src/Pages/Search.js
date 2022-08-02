@@ -58,18 +58,18 @@ function Search() {
       />
       {/* {isSearching  ? (<h4>Searching</h4>):""} */}
       {
-        suggestions.length !== 0 ? (
+        suggestions.length && !isSearching !== 0 ? (
           <datalist id="companies">
           {suggestions.map((sug) => (
             <option key={sug["company_id"]} value={sug["company_name"]}>{sug["company_name"]}</option>
           ))}
       </datalist>
           
-        ) : isSearching  ? (<h4>Searching</h4>):(<>
+        ) : (isSearching  ? (<h4>Searching</h4>):(<>
           <datalist></datalist>
           <h4>No Data Found 😢</h4>
           </>
-        )
+        ))
         }
     </>
   );
