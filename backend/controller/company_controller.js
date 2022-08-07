@@ -51,8 +51,34 @@ const details = async (req, res) => {
         console.log("\n Real Result \n ==> ", data);
         res.send(JSON.stringify(data));
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          // let err = {};
+          // err.data = error.response.data;
+          // err.status = error.response.status;
+          // err.headers = error.response.headers;
+          // res.send(err);
+          // console.log(err);
+          console.log("error1 -> ", error);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          // let err = {};
+          // err.request = error.request;
+          // console.log(err);
+          // res.send(err);
+          console.log("error2 -> ", error);
+          res.send('[]')
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          // console.log("Error", error.message);
+          // let err = {};
+          // err.message = error.message;
+          console.log("error3 -> ", error);
+        }
       });
   } catch (err) {
     console.log(err);
