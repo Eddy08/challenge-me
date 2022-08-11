@@ -15,8 +15,19 @@ function Search() {
   const addCompanyHandler = (event) => {
     console.log("Inside addCompanyHandler");
     let company = {};
-    company["name"] = event.target.value;
-    company["id"] = event.target.key;
+    company["name"] = document.getElementById("companyName").value;
+    console.log(suggestions);
+    let id = suggestions.filter(
+      (val) => val.company_name === company["name"]
+    )[0];
+    console.log(id);
+    company["id"] = id
+      ? id.company_id.split("/")[2]
+      : Math.floor(Math.random() * Math.pow(10, 36))
+          .toString(36)
+          .slice(2)
+          .toUpperCase();
+    console.log(company);
     setCompanyDetails(company);
   };
   let headers = new Headers();
@@ -65,20 +76,23 @@ function Search() {
         list="companies"
         value={input}
         onChange={onChangeHandler}
+        id="companyName"
       />
       {companyDetails["company_name"] !== "" ? (
-        <button type="submit">➕Add Company</button>
+        <button type="submit" onClick={addCompanyHandler}>
+          ➕Add Company
+        </button>
       ) : (
         "Some ERror"
       )}
       {/* {isSearching  ? (<h4>Searching</h4>):""} */}
       {suggestions.length && !isSearching !== 0 ? (
-        <datalist id="companies" onChange={addCompanyHandler}>
+        <datalist id="companies">
           {suggestions.map((sug) => (
             <option
               key={sug["company_id"]}
               value={sug["company_name"]}
-              
+              id={sug["company_id"]}
             >
               {sug["company_name"]}
             </option>
