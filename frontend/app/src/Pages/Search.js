@@ -26,7 +26,7 @@ function Search() {
       : Math.floor(Math.random() * Math.pow(10, 36))
           .toString(36)
           .slice(2)
-          .toUpperCase();
+          .toUpperCase() + "***";
     console.log(company);
     setCompanyDetails(company);
   };
