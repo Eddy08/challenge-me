@@ -1,51 +1,62 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { addCompanyHandler } from "../Service/addCompanyFormHandler";
+import { createCompany } from "../Service/createCompanyHandler";
+import { searchCompanies } from "../Service/searchCompanies";
+import { useNavigate } from "react-router-dom";
 import "./Search.css";
 function Search() {
-  const [companyDetails, setCompanyDetails] = useState({});
+  const [companyDetails, setCompanyDetails] = useState({
+    company_name: "",
+    company_id: "",
+  });
   const [errorValue, setErrorMessage] = useState("");
   const [isSearching, setIsSearchingValue] = useState(false);
   const [input, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([
     { company_name: "", company_id: "" },
   ]);
+  const [redirect, setRedirect] = useState({ to: false, msg: "" });
+
   const onChangeHandler = (event) => {
     setInputValue(event.target.value);
     setIsSearchingValue(true);
   };
-  const addCompanyHandler = (event) => {
-    console.log("Inside addCompanyHandler");
-    let company = {};
-    company["name"] = document.getElementById("companyName").value;
-    console.log(suggestions);
-    let id = suggestions.filter(
-      (val) => val.company_name === company["name"]
-    )[0];
-    console.log(id);
-    company["id"] = id
-      ? id.company_id.split("/")[2]
-      : Math.floor(Math.random() * Math.pow(10, 36))
-          .toString(36)
-          .slice(2)
-          .toUpperCase() + "***";
-    console.log(company);
+  const submitHandler = (event) => {
+    event.preventDefault();
+    let company = addCompanyHandler(suggestions);
     setCompanyDetails(company);
+    createCompany(company).then((response) => {
+      if (response.status === 200) {
+        setRedirect({ to: true, msg: "" });
+        goToList()
+      } else {
+        console.log("some Error 🧡");
+        setRedirect({
+          to: false,
+          msg: "Some Issue when adding the company 😕",
+        });
+      }
+    });
+  };
+  let navigate = useNavigate();
+
+  const goToList = () => {
+    navigate("/companies");
   };
   let headers = new Headers();
   headers.append("Content-Type", "application/json");
-  useEffect(() => {
-    let raw = JSON.stringify({
-      search: input,
-      filter: "company",
-    });
-    let requestOptions = {
-      method: "POST",
-      headers: headers,
-      body: raw,
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:4000/getCompaniesByName", requestOptions)
-      .then((response) => response.text())
+  let raw = JSON.stringify({
+    search: input,
+    filter: "company",
+  });
+  let requestOptions = {
+    method: "POST",
+    headers: headers,
+    body: raw,
+    redirect: "follow",
+  };
+  useLayoutEffect(() => {
+    searchCompanies(requestOptions)
       .then((result) => {
         // console.log("Data type of result",typeof(result))
         // console.log(result);
@@ -65,47 +76,52 @@ function Search() {
         setSuggestions([]);
         console.log("error", error);
       });
-  }, [input, errorValue, isSearching]);
+  }, [input]);
   return (
     <>
       <h1>Search for the Company</h1>
       <h4>{errorValue}</h4>
-      <input
-        type="text"
-        name="company"
-        list="companies"
-        value={input}
-        onChange={onChangeHandler}
-        id="companyName"
-      />
-      {companyDetails["company_name"] !== "" ? (
-        <button type="submit" onClick={addCompanyHandler}>
-          ➕Add Company
-        </button>
-      ) : (
-        "Some ERror"
-      )}
-      {/* {isSearching  ? (<h4>Searching</h4>):""} */}
-      {suggestions.length && !isSearching !== 0 ? (
-        <datalist id="companies">
-          {suggestions.map((sug) => (
-            <option
-              key={sug["company_id"]}
-              value={sug["company_name"]}
-              id={sug["company_id"]}
-            >
-              {sug["company_name"]}
-            </option>
-          ))}
-        </datalist>
-      ) : isSearching ? (
-        <h4>Searching</h4>
-      ) : (
-        <>
-          <datalist></datalist>
-          <h4>No Data Found 😢</h4>
-        </>
-      )}
+      <form onSubmit={submitHandler}>
+        <input
+          type="text"
+          name="company"
+          list="companies"
+          value={input}
+          onChange={onChangeHandler}
+          id="companyName"
+        />
+
+        <button type="submit">➕Add Company</button>
+
+        {redirect.msg !== "" ? (
+          <>
+            <br />
+            <span>{redirect.msg}</span>
+          </>
+        ) :""}
+
+        {/* {isSearching  ? (<h4>Searching</h4>):""} */}
+        {suggestions.length && !isSearching !== 0 ? (
+          <datalist id="companies">
+            {suggestions.map((sug) => (
+              <option
+                key={sug["company_id"]}
+                value={sug["company_name"]}
+                id={sug["company_id"]}
+              >
+                {sug["company_name"]}
+              </option>
+            ))}
+          </datalist>
+        ) : isSearching ? (
+          <h4>Searching</h4>
+        ) : (
+          <>
+            <datalist></datalist>
+            <h4>No Data Found 😢</h4>
+          </>
+        )}
+      </form>
     </>
   );
 }

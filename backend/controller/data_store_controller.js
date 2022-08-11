@@ -1,3 +1,4 @@
+const { company } = require("../models");
 const db = require("../models");
 const CompanyModel = db.company;
 const op = db.Sequelize.Op;
@@ -22,22 +23,26 @@ exports.create = (req, res) => {
   //  Save if not present
   CompanyModel.findOrCreate({
     where: 
-      CompanyObj,
     
-  }).then(([obj, created]) => {
+            { company_name: CompanyObj.company_name }
+        
+    }).then(([obj, created]) => {
     // console.log("Object Recieved", obj);
-    if (created)
-      res.send("Company " + obj.company_name + " Stored Successfully ✅");
-    else
-    {   
-        res.status(500)
+    if (created){
+        CompanyModel.update({company_id:CompanyObj.company_id, on_record:CompanyObj.on_record},{where:{company_name:CompanyObj.company_name}}).then(
+         (value=>console.log(value))   
+        )
+        res.send("Company " + obj.company_name + " Stored Successfully ✅");
+    }
+    else {
+      res.status(500);
 
-        res.send(
-            "Company with name " +
-            obj.company_name +
-            " already Exists with id " +
-            obj.company_id
-            );
-        }
-        });
+      res.send(
+        "Company with name " +
+          obj.company_name +
+          " already Exists with id " +
+          obj.company_id
+      );
+    }
+  });
 };
