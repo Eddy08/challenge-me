@@ -22,19 +22,16 @@ exports.create = (req, res) => {
   };
   //  Save if not present
   CompanyModel.findOrCreate({
-    where: 
-    
-            { company_name: CompanyObj.company_name }
-        
-    }).then(([obj, created]) => {
+    where: { company_name: CompanyObj.company_name },
+  }).then(([obj, created]) => {
     // console.log("Object Recieved", obj);
-    if (created){
-        CompanyModel.update({company_id:CompanyObj.company_id, on_record:CompanyObj.on_record},{where:{company_name:CompanyObj.company_name}}).then(
-         (value=>console.log(value))   
-        )
-        res.send("Company " + obj.company_name + " Stored Successfully ✅");
-    }
-    else {
+    if (created) {
+      CompanyModel.update(
+        { company_id: CompanyObj.company_id, on_record: CompanyObj.on_record },
+        { where: { company_name: CompanyObj.company_name } }
+      ).then((value) => console.log(value));
+      res.send("Company " + obj.company_name + " Stored Successfully ✅");
+    } else {
       res.status(500);
 
       res.send(
@@ -47,18 +44,19 @@ exports.create = (req, res) => {
   });
 };
 
-exports.readAll=(req,res)=>{
+exports.readAll = (req, res) => {
+  console.log("Inside ReadAll Data method");
   let data;
-  if(!req.body){
-data=CompanyModel.findAll();
+  if (!req.body) {
+    data = CompanyModel.findAll();
+  } else {
+    data = CompanyModel.findAll();
   }
-  else{
-    data=companyModel.findAll()
-  }
-  data.then(data=>res.send(data)).catch(err => {
-    res.status(500).send({
-      message:
-        err.message || "Some error occurred while retrieving data."
+  data
+    .then((data) => res.send(data))
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving data.",
+      });
     });
-  });
-}
+};

@@ -55,8 +55,9 @@ function Search() {
     body: raw,
     redirect: "follow",
   };
+  let getData=searchCompanies(requestOptions);
   useLayoutEffect(() => {
-    searchCompanies(requestOptions)
+    getData
       .then((result) => {
         // console.log("Data type of result",typeof(result))
         // console.log(result);
@@ -76,7 +77,7 @@ function Search() {
         setSuggestions([]);
         console.log("error", error);
       });
-  }, [input]);
+  },[input]);
   return (
     <>
       <h1>Search for the Company</h1>
