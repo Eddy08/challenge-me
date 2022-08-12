@@ -28,12 +28,12 @@ function Search() {
     createCompany(company).then((response) => {
       if (response.status === 200) {
         setRedirect({ to: true, msg: "" });
-        goToList()
+        goToList();
       } else {
         console.log("some Error 🧡");
         setRedirect({
           to: false,
-          msg: "Some Issue when adding the company 😕",
+          msg: "Some Issue when adding the company 😕\n Check if it is already present🟢 or not 🔴",
         });
       }
     });
@@ -55,7 +55,7 @@ function Search() {
     body: raw,
     redirect: "follow",
   };
-  let getData=searchCompanies(requestOptions);
+  let getData = searchCompanies(requestOptions);
   useLayoutEffect(() => {
     getData
       .then((result) => {
@@ -68,6 +68,7 @@ function Search() {
         } else {
           setSuggestions(resultValue);
           setErrorMessage("");
+          setRedirect({ to: false, msg: "" });
         }
         setIsSearchingValue(false);
       })
@@ -77,10 +78,10 @@ function Search() {
         setSuggestions([]);
         console.log("error", error);
       });
-  },[input]);
+  }, [input]);
   return (
-    <>
-      <h1>Search for the Company</h1>
+    <div style={{ height: 400, width: "100%",paddingTop:2 }}>
+      <h1 id="heading">Search for the Company</h1>
       <h4>{errorValue}</h4>
       <form onSubmit={submitHandler}>
         <input
@@ -90,16 +91,19 @@ function Search() {
           value={input}
           onChange={onChangeHandler}
           id="companyName"
+          placeholder="Search by Company Name"
         />
 
-        <button type="submit">➕Add Company</button>
+        <button id="submitBtn" type="submit">➕Add Company</button>
 
         {redirect.msg !== "" ? (
           <>
             <br />
             <span>{redirect.msg}</span>
           </>
-        ) :""}
+        ) : (
+          ""
+        )}
 
         {/* {isSearching  ? (<h4>Searching</h4>):""} */}
         {suggestions.length && !isSearching !== 0 ? (
@@ -123,7 +127,7 @@ function Search() {
           </>
         )}
       </form>
-    </>
+    </div>
   );
 }
 export default Search;

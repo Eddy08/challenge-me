@@ -18,7 +18,7 @@ exports.create = (req, res) => {
 
     company_id: req.body.company_id,
 
-    on_record: toString(req.body.company_id).includes("***") ? false : true,
+    on_record: req.body.company_id.toString().includes("***") ? false : true,
   };
   //  Save if not present
   CompanyModel.findOrCreate({
@@ -48,12 +48,19 @@ exports.readAll = (req, res) => {
   console.log("Inside ReadAll Data method");
   let data;
   if (!req.body) {
-    data = CompanyModel.findAll();
+    data = CompanyModel.findAll({  order: [[db.Sequelize.literal('"updatedAt"'), 'DESC']]});
   } else {
-    data = CompanyModel.findAll();
+    data = CompanyModel.findAll({  order: [[db.Sequelize.literal('"updatedAt"'), 'DESC']]});
   }
   data
-    .then((data) => res.send(data))
+    .then((data) => {
+      // let sortedData=data.sort((a, b) => new Date(a.updatedAt) < new Date(b.updatedAt))
+      // console.log("sorted Data ",sortedData)
+      // console.log("unsorted data",data)
+      res.send(
+        data
+      );
+    })
     .catch((err) => {
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving data.",
