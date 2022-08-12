@@ -46,3 +46,19 @@ exports.create = (req, res) => {
     }
   });
 };
+
+exports.readAll=(req,res)=>{
+  let data;
+  if(!req.body){
+data=CompanyModel.findAll();
+  }
+  else{
+    data=companyModel.findAll()
+  }
+  data.then(data=>res.send(data)).catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving data."
+    });
+  });
+}
