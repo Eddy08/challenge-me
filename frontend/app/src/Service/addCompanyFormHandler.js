@@ -5,7 +5,7 @@ export function addCompanyHandler( suggestions){
         company["company_name"] = document.getElementById("companyName").value;
         console.log(suggestions);
         let id = suggestions.filter(
-          (val) => val.company_name === company["name"]
+          (val) => val.company_name === company["company_name"]
         )[0];
         // console.log(id);
         company["company_id"] = id

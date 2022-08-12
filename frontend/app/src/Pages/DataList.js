@@ -4,18 +4,20 @@ import { getListOfCompanies } from "../Service/getListOfCompaines";
 import { useState, useEffect } from "react";
 const columns = [
 
-  {
-    field: "uniqueId",
-    headerName: "uniqueId",
-    description: "Combination of Company Name and Company Id ➕",
-    sortable: false,
-    width: 430,
-    valueGetter: (params) =>
-      `${params.row.company_name || ""} ${params.row.company_id || ""}`,
-  },
-  { field: "company_id", headerName: "ID", width: 230 },
+  // {
+  //   field: "uniqueId",
+  //   headerName: "uniqueId",
+  //   description: "Combination of Company Name and Company Id ➕",
+  //   sortable: false,
+  //   width: 430,
+  //   valueGetter: (params) =>
+  //     `${params.row.company_name || ""} ${params.row.company_id || ""}`,
+  // },
+  { field: "company_id", headerName: "ID", width: 430 },
   { field: "company_name", headerName: "Company name", width: 430 },
-  { field: "on_record", headerName: "Present on Record", width: 130 },
+  { field: "on_record", headerName: "On Record 🧾", width: 130 },
+  { field: "updatedAt", headerName: "Last Updated At", width: 220 },
+
 ];
 let errorMsg = "";
 let rows = [];
@@ -27,6 +29,7 @@ export default function DataTable() {
       console.log(JSON.stringify(response.data));
       rows = response.data;
       setRowsData( rows);
+      errorMsg=""
     })
     .catch(function (error) {
       console.log(error);
