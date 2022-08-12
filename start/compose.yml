@@ -27,6 +27,8 @@ services:
       dockerfile: ./docker/backend/Dockerfile
       args:
         - PAT=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
+    # volumes:
+    #   - /home/others/node/challenge-me/backend:/challenge-me/backend
     ports:
       - "4000:4000"  
 
@@ -38,6 +40,8 @@ services:
         - PAT=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
     ports:
      - "3000:3000"
+    # volumes:
+    #   - /home/others/node/challenge-me/frontend/app:/challenge-me/frontend/app
 
 
 
