@@ -1,0 +1,31 @@
+FROM ubunt
+RUN apk add postgresql
+RUN mkdir /run/postgresql
+RUN chown postgres:postgres /run/postgresql/
+RUN mkdir /var/lib/postgresql/data
+RUN chmod 0700 /var/lib/postgresql/data
+# RUN postgresql-setup initdb
+RUN apk add sudo
+RUN NEWUSER='harsh'
+RUN adduser -d "${NEWUSER}" $NEWUSER
+RUN echo "$NEWUSER ALL=(ALL) ALL" > /etc/sudoers.d/$NEWUSER && chmod 0440 /etc/sudoers.d/$NEWUSER
+
+RUN su -s harsh initdb -D /var/lib/postgresql/data
+RUN echo "host all all 0.0.0.0/0 md5" >> /var/lib/postgresql/data/pg_hba.conf
+RUN echo "listen_addresses='*'" >> /var/lib/postgresql/data/postgresql.conf
+RUN pg_ctl start -D /var/lib/postgresql/data
+RUN touch /etc/local.d/postgres-custom.start
+RUN touch /etc/local.d/postgres-custom.start
+
+RUN apk --no-cache add git
+ARG PAT
+RUN git clone https://${PAT}@github.com/Eddy08/challenge-me
+WORKDIR /challenge-me/backend
+RUN npm install nodemon -g
+# COPY . .
+RUN npm install
+RUN nodemon index.js
+RUN  cd /challenge-me/frontend/app
+# COPY . .
+RUN npm install
+CMD npm run start
