@@ -1,8 +1,8 @@
 FROM ubuntu:latest
 ARG DEBIAN_FRONTEND=noninteractive
-ENV POSTGRES_USER: root
-ENV POSTGRES_PASSWORD: root
-ENV POSTGRES_DB: test_db
+ENV POSTGRES_USER: harsh
+ENV POSTGRES_PASSWORD: harsh
+ENV POSTGRES_DB: company
 RUN  apt-get update \
     && apt-get install -y wget \
     && rm -rf /var/lib/apt/lists/*

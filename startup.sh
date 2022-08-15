@@ -5,6 +5,35 @@ export NVM_DIR="$HOME/.nvm"
 # nvm use node /etc/init.d/postgresql restart  && cd frontend/app && npm run start >output1.txt && cd ../../backend && nodemon index.js >output2.txt
 nvm use node
 /etc/init.d/postgresql restart
+su - postgres
+# createdb company
+psql -U postgres -c " SELECT 'CREATE DATABASE company' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'company') "
+psql -U postgres -c "DO
+\$do\$
+BEGIN
+   IF EXISTS (
+      SELECT FROM pg_catalog.pg_roles
+      WHERE  rolname = 'harsh') THEN
+
+      RAISE NOTICE 'Role "harsh" already exists. Skipping.';
+   ELSE
+      BEGIN   -- nested block
+         CREATE ROLE harsh LOGIN PASSWORD 'harsh';
+      EXCEPTION
+         WHEN duplicate_object THEN
+            RAISE NOTICE 'Role "harsh" was just created by a concurrent transaction. Skipping.';
+      END;
+   END IF;
+END
+\$do\$;"
+psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE company TO harsh;"
+# psql -s company <<-EOSQL CREATE USER root;  GRANT ALL PRIVILEGES ON DATABASE company TO root; EOSQL
+# createdb company
+# psql -s company
+# create user root password 'root';
+# GRANT ALL PRIVILEGES ON DATABASE company TO root;
+# \q;
+exit;
 cd frontend/app
 npm run build
 cp -r build/ ../../backend/ui/
