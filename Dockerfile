@@ -61,5 +61,5 @@ WORKDIR /challenge-me/frontend/app
 RUN npm install
 WORKDIR /challenge-me
 RUN chmod +x /challenge-me/startup.sh
-ENTRYPOINT ["/challenge-me/startup.sh"]
+# ENTRYPOINT ["/challenge-me/startup.sh"]
 
