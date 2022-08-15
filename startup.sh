@@ -9,4 +9,4 @@ cd frontend/app
 npm run build
 cp -r build/ ../../backend/ui/
 cd ../../backend
-nodemon index.js
+npm start
