@@ -7,8 +7,8 @@ nvm use node
 /etc/init.d/postgresql restart
 su - postgres
 # createdb company
-psql -U postgres -c " SELECT 'CREATE DATABASE company' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'company') "
-psql -U postgres -c "DO
+psql -c " SELECT 'CREATE DATABASE company' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'company') "
+psql -c "DO
 \$do\$
 BEGIN
    IF EXISTS (
@@ -26,7 +26,7 @@ BEGIN
    END IF;
 END
 \$do\$;"
-psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE company TO harsh;"
+psql -c "GRANT ALL PRIVILEGES ON DATABASE company TO harsh;"
 # psql -s company <<-EOSQL CREATE USER root;  GRANT ALL PRIVILEGES ON DATABASE company TO root; EOSQL
 # createdb company
 # psql -s company
