@@ -62,5 +62,5 @@ RUN npm install
 WORKDIR /challenge-me
 RUN chmod +x /challenge-me/startup.sh
 # ENTRYPOINT ["/challenge-me/startup.sh"]
-CMD [ "ls", "-l" ]
+CMD npm run start && cd ../backend && nodemon index.js && /etc/init.d/postgresql restart
 
