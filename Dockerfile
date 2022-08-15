@@ -63,7 +63,7 @@ WORKDIR /challenge-me
 RUN chmod +x /challenge-me/startup.sh
 # ENTRYPOINT ["/challenge-me/startup.sh"]
 EXPOSE 3000 4000 5050 5432
-ENV PORT=3000
+ENV PORT=4000
 CMD ["/challenge-me/startup.sh"]
 # CMD cd frontend/app && npm run start && cd ../backend && nodemon index.js && /etc/init.d/postgresql restart
 
