@@ -62,4 +62,5 @@ RUN npm install
 WORKDIR /challenge-me
 RUN chmod +x /challenge-me/startup.sh
 # ENTRYPOINT ["/challenge-me/startup.sh"]
+CMD [ "ls", "-l" ]
 
