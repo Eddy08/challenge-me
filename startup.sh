@@ -5,9 +5,9 @@ export NVM_DIR="$HOME/.nvm"
 # nvm use node /etc/init.d/postgresql restart  && cd frontend/app && npm run start >output1.txt && cd ../../backend && nodemon index.js >output2.txt
 nvm use node
 /etc/init.d/postgresql restart
-bash
-su postgres
+# bash
 # createdb company
+su postgres <<'EOSU'
 \set ON_ERROR_STOP on
 \set VERBOSITY verbose
 psql -c "CREATE EXTENSION IF NOT EXISTS dblink;"
@@ -42,6 +42,8 @@ BEGIN
 END
 \$do\$;"
 psql -c "GRANT ALL PRIVILEGES ON DATABASE company TO harsh;"
+EOSU
+
 # psql -s company <<-EOSQL CREATE USER root;  GRANT ALL PRIVILEGES ON DATABASE company TO root; EOSQL
 # createdb company
 # psql -s company
