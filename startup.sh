@@ -50,7 +50,7 @@ EOSU
 # create user root password 'root';
 # GRANT ALL PRIVILEGES ON DATABASE company TO root;
 # \q;
-exit;
+# exit;
 cd frontend/app
 npm run build
 cp -r build/ ../../backend/ui/
