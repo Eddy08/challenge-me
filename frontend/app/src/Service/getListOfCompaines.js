@@ -10,7 +10,7 @@ export function getListOfCompanies() {
 
   let config = {
     method: "post",
-    url: "http://localhost:4000/getAllCompanies",
+    url: "/getAllCompanies",
   };
 
   return axios(config);

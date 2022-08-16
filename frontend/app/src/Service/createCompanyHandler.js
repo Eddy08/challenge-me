@@ -8,5 +8,5 @@ export function createCompany(company) {
     body: raw,
     redirect: "follow",
   };
-  return fetch("http://localhost:4000/createCompany", requestOptions);
+  return fetch("/createCompany", requestOptions);
 }
