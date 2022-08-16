@@ -5,6 +5,7 @@ export NVM_DIR="$HOME/.nvm"
 # nvm use node /etc/init.d/postgresql restart  && cd frontend/app && npm run start >output1.txt && cd ../../backend && nodemon index.js >output2.txt
 nvm use node
 /etc/init.d/postgresql restart
+bash
 su postgres
 # createdb company
 \set ON_ERROR_STOP on
