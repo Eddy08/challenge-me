@@ -13,8 +13,8 @@
 // };
 module.exports = {
   HOST: "localhost",
-  USER: "harsh",
-  PASSWORD: "harsh",
+  USER: "root",
+  PASSWORD: "root",
   DB: "company",
   dialect: "postgres",
   pool: {
