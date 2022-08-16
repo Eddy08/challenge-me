@@ -7,7 +7,21 @@ nvm use node
 /etc/init.d/postgresql restart
 su - postgres
 # createdb company
-psql -c " SELECT 'CREATE DATABASE company' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'company') "
+\set ON_ERROR_STOP on
+\set VERBOSITY verbose
+psql -c "CREATE EXTENSION IF NOT EXISTS dblink;"
+psql -c "
+DO
+\$do\$
+BEGIN
+   IF EXISTS (SELECT FROM pg_database WHERE datname = 'company') THEN
+      RAISE NOTICE 'Database already exists';  -- optional
+   ELSE
+      PERFORM dblink_exec('dbname=' || current_database()  -- current db
+                        , 'CREATE DATABASE company');
+   END IF;
+END
+\$do\$;"
 psql -c "DO
 \$do\$
 BEGIN
