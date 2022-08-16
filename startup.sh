@@ -9,8 +9,8 @@ su - postgres
 # createdb company
 \set ON_ERROR_STOP on
 \set VERBOSITY verbose
-psql -c "CREATE EXTENSION IF NOT EXISTS dblink;"
-psql -c "
+psql -U postgres -c "CREATE EXTENSION IF NOT EXISTS dblink;"
+psql -U postgres -c "
 DO
 \$do\$
 BEGIN
@@ -22,7 +22,7 @@ BEGIN
    END IF;
 END
 \$do\$;"
-psql -c "DO
+psql -U postgres -c "DO
 \$do\$
 BEGIN
    IF EXISTS (
@@ -40,7 +40,7 @@ BEGIN
    END IF;
 END
 \$do\$;"
-psql -c "GRANT ALL PRIVILEGES ON DATABASE company TO harsh;"
+psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE company TO harsh;"
 # psql -s company <<-EOSQL CREATE USER root;  GRANT ALL PRIVILEGES ON DATABASE company TO root; EOSQL
 # createdb company
 # psql -s company
