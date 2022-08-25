@@ -27,7 +27,7 @@ SHELL ["/bin/bash", "--login", "-i", "-c"]
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 RUN source /root/.bashrc && nvm install node
 RUN nvm use node
-RUN git clone https://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@github.com/Eddy08/challenge-me
+RUN git clone https://github.com/Eddy08/challenge-me
 # RUN node -v
 WORKDIR /challenge-me/backend
 # RUN 

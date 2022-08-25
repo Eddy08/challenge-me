@@ -1,18 +1,14 @@
-## Challenge
+## Challenge video link : https://youtu.be/gmF45hVeF4s
 
-### Setup DB ( Postgres ) For Docker
+## Setup With Docker :
 
-```
-  docker pull postgres
-  docker run --name postgresql -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=admin -p 5432:5432 -v /data:/var/lib/postgresql/data -d postgres
-```
+### 1. Build the Image By : `docker build -t bhardwajharsh08/test-app:v1 . --no-cache`
 
-#### pg admin 4
+### 2. Run the images command to get container Id By : `docker images`
 
-```
-docker pull dpage/pgadmin4:latest
-docker run --name pgadmin -p 82:80 -e 'PGADMIN_DEFAULT_EMAIL=user@domain.local' -e 'PGADMIN_DEFAULT_PASSWORD=admin'-d dpage/pgadmin4
-```
+### 3. Run the container by particular image Id : `docker run -p 4000:4000 <container-id> `
+
+## Manual Setup Steps:
 
 ### Backend : Node.js
 
@@ -33,10 +29,12 @@ curl --location --request POST 'localhost:4000/getCompaniesByName' \
 
 ### Frontend : React
 
-#### 1. npm start
+### 1. Go the Frontend folder and run the following command `npm install`
 
-#### 2. Click on Search button or List button for the required functionalities
+### 2. Then Run `npm start`
+
+#### 3. Click on Search button or List button for the required functionalities
 
 ---
 
-### Db Scripts : Sql
+### Db Scripts : Present Inside start folder : `start/scripts.sql`
